@@ -15,3 +15,13 @@ jobs:
     - uses: actions/checkout@v2
     - name: make
       run: make final
+    - name: Upload Release Asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./base
+        asset_name: base-0.0.${{ github.run_number }}
+        asset_content_type: application/vnd.debian.binary-package

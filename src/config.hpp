@@ -13,12 +13,7 @@ namespace cfg
     
     while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) 
     {
-      std::string r = buffer.data();
-      if (!r.empty() && r[r.length()-1] == '\n') {
-        r.erase(r.length()-1);
-      }
-      if (r != "." && r != "..")
-        result += r;
+      result = buffer.data();
     }
     
     return result;

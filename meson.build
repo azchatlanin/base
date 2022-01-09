@@ -1,8 +1,7 @@
 project (
   'base', 
   'cpp', 
-  version: '0.0.1',
-  default_options : [ 'cpp_std=c++2a' ]
+  default_options : [ 'cpp_std=c++2a' ],
 )
 
 add_project_arguments (
@@ -10,12 +9,11 @@ add_project_arguments (
   language: 'cpp'
 )
 
-dir_incl = [ '/mnt/develop/projects/cpp/logger' ]
-
 #############################################################
 deps = [ 
 ]
-args = []
+args = [
+]
 #############################################################
 
 src = [
@@ -25,7 +23,5 @@ src = [
 executable (
   'base', 
   sources: src, 
-  include_directories : dir_incl,
   dependencies: deps, 
-  cpp_args: args
 )

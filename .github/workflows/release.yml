@@ -13,8 +13,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: make
-      run: make final
+    - name: setup environment
+    - run: sudo apt-get update && sudo apt-get install build-essential python3 python3-pip
+      run: python3 -m pip install meson
+      run: python3 -m pip install ninja
+    - name: project build
+      run: meson setup build
+      run: make 
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -32,6 +37,15 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./base
+        asset_path: ./build/base
         asset_name: base-0.0.${{ github.run_number }}
         asset_content_type: application/vnd.debian.binary-package
+
+
+
+
+
+
+
+
+

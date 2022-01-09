@@ -17,7 +17,3 @@ run:
 	$(DECORATOR_BEGIN) Run ... $(DECORATOR_END)
 	./build/$(PROJECT_NAME) 
 
-final:
-	$(DECORATOR_BEGIN) Run ... $(DECORATOR_END)
-	./$(PROJECT_NAME) 
-

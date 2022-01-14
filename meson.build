@@ -1,5 +1,5 @@
 project (
-  'base', 
+  'otus', 
   'cpp', 
   default_options : [ 'cpp_std=c++2a' ],
 )
@@ -21,7 +21,7 @@ src = [
 ]
 
 executable (
-  'base', 
+  'otus', 
   sources: src, 
   dependencies: deps, 
 )

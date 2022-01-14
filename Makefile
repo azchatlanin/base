@@ -1,4 +1,4 @@
-PROJECT_NAME=base
+PROJECT_NAME=otus
 BUILD_VERSION=0.9.$(shell date +%s)
 
 DECORATOR_BEGIN=@echo "\033[0;32m [OK] \033[0m\033[0;33m 

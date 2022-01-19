@@ -15,5 +15,5 @@ build_meson:
 
 run:
 	$(DECORATOR_BEGIN) Run ... $(DECORATOR_END)
-	./build/$(PROJECT_NAME) 
+	cat homeworks/ip_filter/ip_filter.tsv | ./build/$(PROJECT_NAME) 
 

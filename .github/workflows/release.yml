@@ -2,9 +2,9 @@ name: C/C++ CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ ip_filter ]
   pull_request:
-    branches: [ main ]
+    branches: [ ip_filter ]
 
 jobs:
   build:
@@ -40,8 +40,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./build/base
-        asset_name: base-0.0.${{ github.run_number }}
+        asset_path: ./build/otus
+        asset_name: ip_filter-0.0.${{ github.run_number }}
         asset_content_type: application/vnd.debian.binary-package
 
 

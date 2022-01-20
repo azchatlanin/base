@@ -11,23 +11,22 @@
 namespace tools
 {
   using v_str = std::vector<std::string>;
-  using string = std::string;
 
   struct error_exception : public std::exception
   {
-    error_exception(string msg, string error, string trace) : message{ msg }, error{ error }, trace{ trace } {};
-    string message;
-    string error;
-    string trace;
+    error_exception(std::string msg, std::string error, std::string trace) : message{ msg }, error{ error }, trace{ trace } {};
+    std::string message;
+    std::string error;
+    std::string trace;
     const char* what () const throw () { return message.c_str(); }
   };
 
-  inline v_str split_str(const string& str, const char t)
+  inline v_str split_str(const std::string& str, const char t)
   {
     v_str v;
-    string::size_type begin = 0;
-    string::size_type end = str.find_first_of(t);
-    while(end != string::npos)
+    std::string::size_type begin = 0;
+    std::string::size_type end = str.find_first_of(t);
+    while(end != std::string::npos)
     {
       v.emplace_back(str.substr(begin, end - begin));
       begin = ++end;

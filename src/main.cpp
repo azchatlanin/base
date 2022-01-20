@@ -80,6 +80,7 @@ namespace pr
       using it = std::ostream_iterator<decltype(pool)::value_type>;
       std::copy(pool.cbegin(), pool.cend(), it{ out });
       std::copy_if(pool.cbegin(), pool.cend(), it{ out }, [](const ip& node) { return filter(node.parts, 1); });
+      std::copy_if(pool.cbegin(), pool.cend(), it{ out }, [](const ip& node) { return filter(node.parts, 1); });
     } 
     catch (tools::error_exception& err) 
     {

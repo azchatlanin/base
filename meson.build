@@ -1,5 +1,3 @@
-project (
-  'otus', 
 # https://pixorblog.wordpress.com/2019/07/27/a-meson-starter-script-for-c-projects
 project(
   'base', 
@@ -19,15 +17,6 @@ add_project_arguments (
 inc = []
 inc += include_directories('.')
 
-src = [
-  'src/main.cpp'
-]
-
-executable (
-  'otus', 
-  sources: src, 
-  dependencies: deps, 
-)
 subdir('vendor')
 subdir('src')
 subdir('tests')

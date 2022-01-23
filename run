@@ -1,0 +1,39 @@
+#!/bin/sh
+
+MODE1=$1
+MODE2=$2
+TEST="meson test $MODE1 -C build"
+RUN="./build/bin/base ${MODE1}"
+
+command meson compile -C build
+
+case "$MODE1" in
+  "hello" )
+    if [ $MODE2 == "test" ]; then
+      command $TEST 
+    else
+      command $RUN
+    fi
+  ;;
+
+  "ip_filter" )
+    if [ $MODE2 == "test" ]; then
+      command cat homeworks/$MODE1/ip_filter.tsv | command $TEST 
+    else
+      command cat homeworks/$MODE1/ip_filter.tsv | command $RUN
+    fi
+
+  ;;
+
+# default worker
+  * )
+   echo
+   echo "ERROR: please set the project name (. run project_name)"
+  ;;
+esac
+
+return 0
+
+
+
+

@@ -2,9 +2,9 @@ name: C/C++ CI
 
 on:
   push:
-    branches: [ ip_filter ]
+    branches: [ main ]
   pull_request:
-    branches: [ ip_filter ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -21,8 +21,10 @@ jobs:
       run: python3 -m pip install ninja
     - name: project build
       run: meson setup build
-    - name: run project
-      run: make 
+    - name: run project test
+      run: . run ip_filter test
+    - name: run project 
+      run: . run ip_filter 
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -40,7 +42,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./build/otus
+        asset_path: ./build/bin/base
         asset_name: ip_filter-0.0.${{ github.run_number }}
         asset_content_type: application/vnd.debian.binary-package
 

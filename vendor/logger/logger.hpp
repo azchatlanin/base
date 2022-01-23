@@ -177,3 +177,4 @@ class log
     print_tuple(data, std::make_index_sequence<std::tuple_size<T>::value>{});
   }
 };
+

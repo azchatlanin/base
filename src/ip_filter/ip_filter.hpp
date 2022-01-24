@@ -114,6 +114,10 @@ namespace pr
       {
         ERROR(err.message);
       }
+      catch(std::invalid_argument &e)
+      {
+        ERROR("invalid argument in array IP");
+      }
 
       return pool;
     }

@@ -23,31 +23,11 @@ jobs:
       run: meson setup build
     - name: run project test
       run: . run ip_filter test
-    - name: run project 
-      run: . run ip_filter 
-    - name: Prepare Release Folder step 1
-      run: mkdir release && cp -r ./build/bin ./release && cp -r ./build/src ./release
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.run_number }}
-        release_name: Release ${{ github.run_number }}
-        draft: false
-        prerelease: false
-    - name: Upload Release Asset
-      id: upload-release-asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./release
-        asset_name: ip_filter-0.0.${{ github.run_number }}
-        asset_content_type: application/vnd.debian.binary-package
-
+    - name: run project test
+      run: . run ip_filter test
+    - name: run project
+      run: . run ip_filter
+    
 
 
 

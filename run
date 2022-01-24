@@ -20,7 +20,7 @@ case "$MODE1" in
     if [ $MODE2 == "test" ]; then
       command cat homeworks/$MODE1/ip_filter.tsv | command $TEST 
     else
-      command cat homeworks/$MODE1/ip_filter.tsv | command $RUN #| command md5sum d8db6b958eb71db1ecbc69964352d2b5 -
+      command cat homeworks/$MODE1/ip_filter.tsv | command $RUN | command md5sum d8db6b958eb71db1ecbc69964352d2b5 -
     fi
   ;;
 

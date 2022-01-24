@@ -9,7 +9,7 @@ command meson compile -C build
 
 case "$MODE1" in
   "hello" )
-    if [ $MODE2 == "test" ]; then
+    if [[ $MODE2 == "test" ]]; then
       command $TEST 
     else
       command $RUN
@@ -17,13 +17,15 @@ case "$MODE1" in
   ;;
 
   "ip_filter" )
-    if [ $MODE2 == "test" ]; then
-      command cat homeworks/$MODE1/ip_filter.tsv | command $TEST 
+    if [[ $MODE2 == "test" ]]; then
+      command cat homeworks/$MODE1/ip_filter_test.tsv | command $TEST 
     else
-      command cat homeworks/$MODE1/ip_filter.tsv | command $RUN | command md5sum d8db6b958eb71db1ecbc69964352d2b5 -
+      command cat homeworks/$MODE1/ip_filter.tsv | command $RUN
+      #command cat homeworks/$MODE1/ip_filter.tsv | command $RUN >> homeworks/ip_filter/out.tsv\
+      #&& command md5sum homeworks/ip_filter/ip_filter.tsv homeworks/ip_filter/out.tsv > homeworks/ip_filter/result.md5\
+      #&& rm -f homeworks/ip_filter/out.tsv homeworks/ip_filter/result.md5 # d8db6b958eb71db1ecbc69964352d2b5
     fi
   ;;
-
 # default worker
   * )
    echo

@@ -1,4 +1,5 @@
 #include <array>
+#include <algorithm>
 #include <vector>
 #include <set>        // multiset
 #include <functional> // greater
@@ -30,6 +31,11 @@ namespace pr
         });
       };
 
+      friend bool operator< (const ip& l, const ip& r)
+      {
+        return l.parts < r.parts;
+      }
+
       friend bool operator> (const ip& l, const ip& r)
       {
         return l.parts > r.parts;
@@ -37,9 +43,16 @@ namespace pr
 
       friend std::ostream& operator<< (std::ostream& out, const ip& node)
       {
-        for(const auto& i: node.parts) 
-          out << i << (i != *(node.parts.cend()- 1) ? '.' : '\n'); // node.parts[3]
+        out << node.parts[0] << '.'
+            << node.parts[1] << '.' 
+            << node.parts[2] << '.'
+            << node.parts[3] << '\n';
         return out;
+      }
+
+      friend bool operator== (const ip& l, const ip& r)
+      {
+        return l.parts == r.parts;
       }
 
       arr<IP_SIZE> parts;
@@ -70,34 +83,39 @@ namespace pr
       return filter_begin(parts, I{}, args...);
     }
 
-    inline int process()
+    inline std::vector<ip> process()
     {
       std::istream& in = std::cin; 
       std::ostream& out = std::cout;
 
-      std::multiset<ip, std::greater<ip>> pool;
+      std::vector<ip> pool;
+      std::vector<ip> transform;
 
       try {
         for(std::string line; std::getline(in, line);)
-          pool.emplace(tools::split_str(tools::split_str(line, '\t').at(0), '.'));
-
-        using it = std::ostream_iterator<decltype(pool)::value_type>;
-        std::copy(pool.cbegin(), pool.cend(), it{ out });
-        std::copy_if(pool.cbegin(), pool.cend(), it{ out }, [](const ip& node) { return filter(node.parts, 1u); });
-        std::copy_if(pool.cbegin(), pool.cend(), it{ out }, [=](const ip& node) { return filter(node.parts, 46u, 70u); });
+          pool.emplace_back(tools::split_str(tools::split_str(line, '\t').at(0), '.'));
+          
+        std::sort(pool.begin(), pool.end(), std::greater<ip>());
+        
+        using it = std::back_insert_iterator<std::vector<ip>>;
+        std::copy_if(pool.cbegin(), pool.cend(), it(transform), [](const ip& node) { return filter(node.parts, 1u); });
+        std::copy_if(pool.cbegin(), pool.cend(), it(transform), [=](const ip& node) { return filter(node.parts, 46u, 70u); });
 
         const int n = 46u;
         auto any_of = [=](const ip& node) {
           return std::any_of(node.parts.cbegin(), node.parts.cend(), [=](const auto& p) { return p == n; });
         };
-        std::copy_if(pool.cbegin(), pool.cend(), it{ out }, any_of);
+        std::copy_if(pool.cbegin(), pool.cend(), it(transform), any_of);
+
+        pool.insert(pool.cend(),transform.cbegin(), transform.cend());
+        std::copy(pool.cbegin(), pool.cend(), std::ostream_iterator<decltype(pool)::value_type>{ out });
       } 
       catch (tools::error_exception& err) 
       {
         ERROR(err.message);
       }
 
-      return 0;
+      return pool;
     }
   }
 }

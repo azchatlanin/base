@@ -9,12 +9,10 @@ int main(int argc, char *argv[])
     exit(EXIT_FAILURE);
   std::string name = argv[1];
 
-  int result = 0;
-
   if (name ==  "hello")
-    result = pr::hello::process();
+    pr::hello::process();
   else if (name == "ip_filter")
-    result = pr::ip_filter::process();
+    pr::ip_filter::process();
   
-  return result;
+  return 0;
 }

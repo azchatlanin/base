@@ -26,7 +26,7 @@ jobs:
     - name: run project 
       run: . run ip_filter 
     - name: Prepare Release Folder step 1
-      run: mkdir release && cp ./build/bin ./release && cp ./build/src ./release
+      run: mkdir release && cp -r ./build/bin ./release && cp -r ./build/src ./release
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1

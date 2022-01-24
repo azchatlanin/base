@@ -9,6 +9,6 @@ deps += ip_filter_dep
 
 executable(
   'base', 'main.cpp', 
-  install: true, 
-  dependencies : [deps]
+  dependencies : deps,
+  cpp_args: args
 )

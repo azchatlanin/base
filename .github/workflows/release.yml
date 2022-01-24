@@ -25,6 +25,8 @@ jobs:
       run: . run ip_filter test
     - name: run project 
       run: . run ip_filter 
+    - name: Prepare Release Folder step 1
+      run: mkdir release && cp ./build/bin ./release && cp ./build/src ./release
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -42,7 +44,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./build/bin/base
+        asset_path: ./release
         asset_name: ip_filter-0.0.${{ github.run_number }}
         asset_content_type: application/vnd.debian.binary-package
 

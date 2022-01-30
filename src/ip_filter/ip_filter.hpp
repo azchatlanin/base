@@ -4,8 +4,9 @@
 #include <set>        // multiset
 #include <functional> // greater
 
-#include "vendor/logger/logger.hpp"
-#include "vendor/tools/tools.hpp"
+#include "tools/src/logger/logger.hpp"
+#include "tools/src/exception/simple_error.hpp"
+#include "tools/src/func/split_str.hpp"
 
 template<std::size_t N>
 using arr = std::array<unsigned int, N>;
@@ -13,6 +14,7 @@ using arr = std::array<unsigned int, N>;
 template<typename... Args>
 using make_index = std::make_index_sequence<sizeof... (Args)>;
 
+using v_str = std::vector<std::string>;
 const std::size_t IP_SIZE = 4;
 
 namespace pr
@@ -21,7 +23,7 @@ namespace pr
   {
     struct ip 
     {
-      ip(const tools::v_str& data)
+      ip(const v_str& data)
       {
         if (data.size() != IP_SIZE) { ERROR_EXCEPTION("ip data dosn't contain nessesarry data"); }
         std::transform(data.cbegin(), data.cend(), parts.begin(), [](const std::string& ip_str) {
@@ -93,7 +95,7 @@ namespace pr
 
       try {
         for(std::string line; std::getline(in, line);)
-          pool.emplace_back(tools::split_str(tools::split_str(line, '\t').at(0), '.'));
+          pool.emplace_back(tools::func::split_str(tools::func::split_str(line, '\t').at(0), '.'));
           
         std::sort(pool.begin(), pool.end(), std::greater<ip>());
         
@@ -110,7 +112,7 @@ namespace pr
         pool.insert(pool.cend(),transform.cbegin(), transform.cend());
         std::copy(pool.cbegin(), pool.cend(), std::ostream_iterator<decltype(pool)::value_type>{ out });
       } 
-      catch (tools::error_exception& err) 
+      catch (tools::error::error_exception& err) 
       {
         ERROR(err.message);
       }

@@ -15,6 +15,6 @@ test(
   executable(
     'ip_filter',
     'ip_filter.cpp',
-    dependencies: [ ip_filter_dep, vendor_dep, gtest_dep ]
+    dependencies: [ ip_filter_dep, gtest_dep ]
   )
 )

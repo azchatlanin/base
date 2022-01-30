@@ -5,7 +5,9 @@ lib = library(
   'ip_filter',
   include_directories : inc,
   install : true,
-  sources: [headers, sources]
+  sources: [headers, sources],
+  dependencies : deps,
+  cpp_args: args
 )
 
 ip_filter_dep = declare_dependency(

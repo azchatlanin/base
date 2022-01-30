@@ -14,10 +14,19 @@ add_project_arguments (
   language: 'cpp'
 )
 
-inc = []
-inc += include_directories('.')
+deps = [ dependency('threads') ]
+args = []
 
-subdir('vendor')
+tools = subproject('tools')
+logger_dep = tools.get_variable('logger_dep')
+exception_dep = tools.get_variable('exception_dep')
+
+deps += logger_dep
+deps += exception_dep
+
+inc = []
+inc += include_directories('subprojects')
+
 subdir('src')
-subdir('tests')
 subdir('bin')
+subdir('tests')

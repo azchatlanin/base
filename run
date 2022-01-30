@@ -26,6 +26,15 @@ case "$MODE1" in
       #&& rm -f homeworks/ip_filter/out.tsv homeworks/ip_filter/result.md5 # d8db6b958eb71db1ecbc69964352d2b5
     fi
   ;;
+
+  "allocator" )
+    if [[ $MODE2 == "test" ]]; then
+      command $TEST 
+    else
+      command $RUN
+    fi
+  ;;
+
 # default worker
   * )
    echo

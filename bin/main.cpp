@@ -1,6 +1,6 @@
 #include "hello/hello.hpp"
 #include "ip_filter/ip_filter.hpp"
-#include "allocator/allocator.hpp"
+#include "allocator/simple_allocator.hpp"
 
 #include "tools/src/logger/logger.hpp"
 

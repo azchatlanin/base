@@ -1,4 +1,4 @@
-headers = ['allocator.hpp']
+headers = ['simple_allocator.hpp']
 sources = []
 
 lib = library(

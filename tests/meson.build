@@ -18,3 +18,12 @@ test(
     dependencies: [ ip_filter_dep, gtest_dep ]
   )
 )
+
+test(
+  'simple_allocator',
+  executable(
+    'simple_allocator',
+    'simple_allocator.cpp',
+    dependencies: [ simple_allocator_dep, gtest_dep ]
+  )
+)

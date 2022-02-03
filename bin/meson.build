@@ -1,6 +1,6 @@
 deps += hello_dep
 deps += ip_filter_dep
-deps += allocator_dep
+deps += simple_allocator_dep
 
 executable(
   'base', 'main.cpp', 

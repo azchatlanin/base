@@ -2,7 +2,7 @@ headers = ['simple_allocator.hpp']
 sources = []
 
 lib = library(
-  'allocator',
+  'simple_allocator',
   include_directories : inc,
   install : true,
   sources: [headers, sources],
@@ -10,7 +10,7 @@ lib = library(
   cpp_args: args
 )
 
-allocator_dep = declare_dependency(
+simple_allocator_dep = declare_dependency(
   include_directories: inc, 
   link_with: lib,
 )

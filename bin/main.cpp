@@ -11,9 +11,9 @@ int main(int argc, char *argv[])
   std::string name = argv[1];
 
   if (name ==  "hello")
-    pr::hello::process();
+    std::ignore = pr::hello::process();
   else if (name == "ip_filter")
-    pr::ip_filter::process();
+    std::ignore = pr::ip_filter::process();
   else if (name == "simple_allocator")
     pr::allocator::process();
   

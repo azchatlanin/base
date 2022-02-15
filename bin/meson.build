@@ -1,6 +1,7 @@
 deps += hello_dep
 deps += ip_filter_dep
 deps += simple_allocator_dep
+deps += matrix_dep
 
 executable(
   'base', 'main.cpp', 

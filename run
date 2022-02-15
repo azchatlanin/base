@@ -35,6 +35,16 @@ case "$MODE1" in
     fi
   ;;
 
+  "matrix" )
+    if [[ $MODE2 == "test" ]]; then
+      command $TEST 
+    else
+      command $RUN
+    fi
+  ;;
+
+
+
 # default worker
   * )
    echo

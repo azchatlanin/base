@@ -4,6 +4,8 @@
 
 #include "tools/src/index.hpp"
 
+#include "simple_list.hpp"
+
 namespace pr
 {
   namespace allocator
@@ -92,12 +94,21 @@ namespace pr
     {
       try
       {
-        using allocator = simple_allocator<std::pair<const int, int>, 11>;
-        std::map<int, int, std::less<int>, allocator> m;
-        for (int i = 0; i < 3; ++i)
-          m.emplace(i, i+1);
-        for (const auto& p : m)
-          LOG("m", p.first, p.second);
+        // using allocator = simple_allocator<std::pair<const int, int>, 11>;
+        // std::map<int, int, std::less<int>, allocator> m;
+        // for (int i = 0; i < 3; ++i)
+        //   m.emplace(i, i+1);
+        // for (const auto& p : m)
+        //   LOG("m", p.first, p.second);
+
+        using allocator_list = simple_allocator<int, 11>;
+        simple_list<int, allocator_list> sl;
+        sl.add(1);
+        sl.add(2);
+        sl.add(3);
+        for (const auto& p : sl) 
+          LOG("sl", p);
+        LOG(sl.get_allocator().memory_control);
       }
       catch(std::exception& e)
       {

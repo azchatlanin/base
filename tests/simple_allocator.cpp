@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "simple_allocator/simple_allocator.hpp"
+#include "simple_allocator/simple_list.hpp"
 
 TEST(simple_allocator, check__memory_control)
 {
@@ -37,4 +38,13 @@ TEST(simple_allocator, check__stack_overflow)
   catch(...) {
     FAIL() << "Expection not define";
   }
+}
+
+TEST(simple_allocator, check__simple_list)
+{
+  simple_list<int, pr::allocator::simple_allocator<int, 11>> sl;
+  sl.add(1);
+  sl.add(2);
+  sl.add(3);
+  ASSERT_EQ(sl.get_allocator().memory_control, 3);
 }

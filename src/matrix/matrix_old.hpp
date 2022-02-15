@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iterator>
 #include <memory>
 #include <vector>
 #include <tuple>
@@ -29,7 +28,7 @@ namespace pr::matrix
   template <typename... T, std::size_t... I>
   auto subtuple_(const std::tuple<T...>& t, std::index_sequence<I...>) 
   {
-    return std::make_tuple(std::get<I>(t)...);
+    return std::tuple(std::get<I>(t)...);
   }
 
   template <typename... T>
@@ -42,8 +41,8 @@ namespace pr::matrix
   class Matrix
   {
    public:
-    using element_t = typename generate_tuple<T, dimensions>::type;
-    using storage_t = std::vector<decltype(std::tuple_cat(element_t{}, std::tuple<T>{}))>; // here
+    using index_t = typename generate_tuple<T, dimensions>::type;
+    using storage_t = std::vector<decltype(std::tuple_cat(index_t{}, std::tuple<T>{}))>;
 
     Matrix() : local_storage{ new storage{} } {}
 
@@ -121,7 +120,7 @@ namespace pr::matrix
 
         auto operator[](std::size_t i) const
         {
-          return proxy<storage_t, next_index_t>{ local_storage, std::tuple_cat(index, std::make_tuple(i)) };
+          return proxy<storage_t, next_index_t>{ local_storage, std::tuple_cat(index, std::tuple<std::size_t>(i)) };
         }
 
         auto& operator=(const T& value)
@@ -132,14 +131,14 @@ namespace pr::matrix
 
         operator T() const
         {
-          std::shared_ptr<storage_t> intermediate_matrix = local_storage.lock();
-          return intermediate_matrix->get_value(index);
+          std::shared_ptr<storage_t> m = local_storage.lock();
+          return m->get_value(index);
         }
 
         auto operator==(const T& value) const
         {
-          std::shared_ptr<storage_t> intermediate_matrix{ local_storage };
-          return value == intermediate_matrix->get_value(index);
+          std::shared_ptr<storage_t> m{ local_storage };
+          return value == m->get_value(index);
         }
 
         friend bool operator==(const T& lhs, const proxy& rhs)
@@ -156,21 +155,14 @@ namespace pr::matrix
       std::shared_ptr<storage> local_storage;
   };
 
-  struct elem 
-  {
-    int a = 1;
-    std::string b = "test";
-  };
-  
   inline void process()
   {
 
-    Matrix<elem, 3> mx{};
-    mx[2][2][2] = { 3, "super test" };
+    Matrix<float, 3> matrix{};
+    matrix[2][2][2] = 1223.4f;
+    LOG("element =", matrix[2][2][2]);
 
-    LOG("element =", mx[2][2][2]);
-
-    for (const auto& mx_elem : mx)
-      LOG(mx_elem);
+    for (const auto& matrix_element : matrix)
+      LOG(matrix_element);
   };
 }

@@ -1,11 +1,8 @@
-headers = [
-  'simple_allocator.hpp',
-  'simple_list.hpp'
-]
+headers = ['matrix_old.hpp']
 sources = []
 
 lib = library(
-  'simple_allocator',
+  'matrix',
   include_directories : inc,
   install : true,
   sources: [headers, sources],
@@ -13,7 +10,7 @@ lib = library(
   cpp_args: args
 )
 
-simple_allocator_dep = declare_dependency(
+matrix_dep = declare_dependency(
   include_directories: inc, 
   link_with: lib,
 )

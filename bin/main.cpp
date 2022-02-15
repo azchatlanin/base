@@ -1,6 +1,7 @@
 #include "hello/hello.hpp"
 #include "ip_filter/ip_filter.hpp"
 #include "simple_allocator/simple_allocator.hpp"
+#include "matrix/matrix_old.hpp"
 
 #include "tools/src/logger/logger.hpp"
 
@@ -16,6 +17,8 @@ int main(int argc, char *argv[])
     std::ignore = pr::ip_filter::process();
   else if (name == "simple_allocator")
     pr::allocator::process();
+  else if (name == "matrix")
+    pr::matrix::process();
   
   return 0;
 }

@@ -2,7 +2,7 @@
 #include <map>
 #include <new>
 
-#include "tools/src/index.hpp"
+#include "tools/src/logger/logger.hpp"
 
 #include "simple_list.hpp"
 
@@ -19,8 +19,7 @@ namespace pr
         using const_pointer = const T*;
         using reference = T&;
         using const_reference = const T&;
-        int construct_control = 0;
-        int memory_control = 0;
+        int count_allocate = 0;
 
       private:
         pointer memory = nullptr;
@@ -28,30 +27,22 @@ namespace pr
         std::bitset<allocate_size> memory_map;
 
       public:
-        simple_allocator()
-        {
-          memory = static_cast<pointer>(std::malloc(allocate_size * sizeof(value_type)));
-          if (memory == nullptr) 
-            throw std::bad_alloc();
-          memory_map.reset();
-          ++construct_control;
-        }
+        simple_allocator() = default;
         ~simple_allocator() 
         {
           if (memory != nullptr)
             std::free(memory);
-          --construct_control;
         }
     
         template<typename U>
-        explicit simple_allocator(const simple_allocator<U, allocate_size>& t) : construct_control { t.construct_control}, 
-                                                                                 memory_control { t.memory_control } {}
+        explicit simple_allocator(const simple_allocator<U, allocate_size>& t) : count_allocate { t.count_allocate } { }
 
         template <typename U>
         struct rebind { typedef simple_allocator<U, allocate_size> other; };
 
         pointer allocate(std::size_t n) 
         {
+          if (used_size == 0) init();
           if (allocate_size < n + used_size)
             throw std::bad_alloc();
 
@@ -65,7 +56,7 @@ namespace pr
           }
           memory_map.flip(index);
           used_size += n;
-          ++memory_control;
+          ++count_allocate;
           return memory + index;
         }
         
@@ -75,7 +66,7 @@ namespace pr
           for (std::size_t i = 0; i < n; ++i) 
             memory_map.reset(f + i);
           used_size -= n;
-          --memory_control;
+          --count_allocate;
         }
 
         template <typename U, typename... Args>
@@ -88,27 +79,51 @@ namespace pr
         {
           p->~T();
         }
+
+      private:
+        void init()
+        {
+          memory = static_cast<pointer>(std::malloc(allocate_size * sizeof(value_type)));
+          if (memory == nullptr) 
+            throw std::bad_alloc();
+          memory_map.reset();
+        }
     };
 
     inline void process()
     {
       try
       {
-        // using allocator = simple_allocator<std::pair<const int, int>, 11>;
-        // std::map<int, int, std::less<int>, allocator> m;
-        // for (int i = 0; i < 3; ++i)
-        //   m.emplace(i, i+1);
-        // for (const auto& p : m)
-        //   LOG("m", p.first, p.second);
+        using allocator = simple_allocator<std::pair<const int, int>, 11>;
+        std::map<int, int, std::less<int>, allocator> m;
+        for (int i = 0; i < 3; ++i)
+          m.emplace(i, i+1);
+        for (const auto& p : m)
+          LOG("m", p.first, p.second);
+
+        LOG("ca", m.get_allocator().count_allocate);
 
         using allocator_list = simple_allocator<int, 11>;
-        simple_list<int, allocator_list> sl;
-        sl.add(1);
-        sl.add(2);
-        sl.add(3);
-        for (const auto& p : sl) 
+
+        std::list<int, allocator_list> l;
+        l.push_back(1);
+        l.push_back(2);
+        l.push_back(3);
+
+        for (const auto& p : l)
+          LOG("l", p);
+
+        LOG("ca", l.get_allocator().count_allocate);
+
+        using allocatorl = simple_allocator<int, 11>;
+        simple_list<int, allocatorl> sl;
+        sl.push_back(1);
+        sl.push_back(2);
+        sl.push_back(3);
+        for (const auto& p : sl)
           LOG("sl", p);
-        LOG(sl.get_allocator().memory_control);
+
+        LOG("ca", sl.get_allocator().count_allocate);
       }
       catch(std::exception& e)
       {

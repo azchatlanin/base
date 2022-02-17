@@ -3,73 +3,75 @@
 #include <memory>
 #include "tools/src/logger/logger.hpp"
 
-template<typename T, typename allocator_type = std::allocator<T>>
-class simple_list 
+template<class T, class allocator_type = std::allocator<T>> 
+class simple_list
 {
-  public:
-    simple_list() = default;
-    ~simple_list() = default;
-
-    void add(T value) 
-    {
-      auto n = allocator.allocate(1);
-      n->value = value;
-      if (n) 
-      {
-        if (!node) 
-        {
-          node = n;
-          tmp = n;
-        } 
-        else 
-        {
-          tmp->next = n;
-          tmp = n;
-        }
-      }
-    }
-
-    struct Node 
-    {
+  template<class U>
+  class Node
+  {
+    public:
       Node() = default;
-      explicit Node(const T& value_): value(value_), next(nullptr) {};
-      T value;
-      Node* next;
-    };
+      template <class... Args>
+      Node(Args&&... args) : next { nullptr }, value { std::forward<Args>(args)... } {}
+      ~Node() { next = nullptr; }
 
-    class Iterator
+    public:
+      U& get() { return value; }
+      Node<U>* get_next() { return next; }
+      void set_next(Node<U>* ptr) { next = ptr; }
+      
+    private: 
+      Node<U>* next { nullptr };
+      U value;
+  };
+
+  using allocator = typename allocator_type::template rebind<Node<T>>::other;
+
+public:
+  simple_list() : alloc { allocator{} } { tail = &head; }
+  ~simple_list()
+  { 
+    auto node = head.get_next();
+    while (node)
     {
-      public:
-        Iterator(Node* element) : current(element) {}
-        Iterator operator++() 
-        {
-          current = current->next;
-          return current;
-        }
-        auto operator*() { return current->value; }
-        bool operator!=(const Iterator& rhs) { return current != rhs.current; }
-
-      private:
-        Node* current;
-    };
-
-    Iterator begin()
-    {
-      return Iterator(this->node);
+      auto nextNode = node->get_next();
+      alloc.deallocate(node, 1);
+      alloc.destroy(node);
+      node = nextNode;
     }
+  }
 
-    Iterator end()
-    {
-      if (this->tmp)
-        return Iterator(this->tmp->next);
-      return Iterator(nullptr);
-    }
+  std::size_t size() const { return size_; }
+  allocator_type get_allocator() { return allocator_type(*static_cast<const allocator*>(&this->alloc)); }
 
-    using Allocator = typename allocator_type::template rebind<Node>::other;
-    Allocator get_allocator() { return allocator; };
+  template <class... Args>
+  void push_back(Args&&... args)
+  {
+    auto n = alloc.allocate(1);
+    alloc.construct(n, std::forward<Args>(args)...);
+    tail->set_next(n);
+    tail = n;
+    size_++;
+  }
 
-  private:
-    Node* node = nullptr;
-    Node* tmp = nullptr;
-    Allocator allocator;
+  class iterator
+  {
+    public:
+      iterator(Node<T>* ptr) : ptr { ptr } {}
+      Node<T>* get_node() { return ptr; }
+      iterator operator ++ () { ptr = ptr->get_next(); return *this; }
+      T& operator * () { return ptr->get(); }
+      bool operator != (const iterator& rhs) { return ptr != rhs.ptr; }
+    private: 
+      Node<T>* ptr;
+  };
+
+  iterator begin() { return iterator{ head.get_next() }; }
+  iterator end() { return iterator{ tail->get_next() }; }
+
+  private: 
+    std::size_t size_ { 0 };
+    Node<T>* tail { nullptr };
+    Node<T> head;
+    allocator alloc;
 };

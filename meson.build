@@ -19,10 +19,10 @@ args = []
 
 tools = subproject('tools')
 exception_dep = tools.get_variable('exception_dep')
-#logger_dep = tools.get_variable('logger_dep')
+logger_dep = tools.get_variable('logger_dep')
 
 deps += exception_dep
-##deps += logger_dep
+deps += logger_dep
 
 inc = []
 inc += include_directories('subprojects')

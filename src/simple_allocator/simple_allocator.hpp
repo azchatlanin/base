@@ -1,3 +1,5 @@
+#pragma once
+
 #include <bitset>
 #include <map>
 #include <new>
@@ -116,7 +118,7 @@ namespace pr
         LOG("ca", l.get_allocator().count_allocate);
 
         using allocatorl = simple_allocator<int, 11>;
-        simple_list<int, allocatorl> sl;
+        list::simple_list<int, allocatorl> sl;
         sl.push_back(1);
         sl.push_back(2);
         sl.push_back(3);

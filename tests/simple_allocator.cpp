@@ -33,7 +33,7 @@ TEST(simple_allocator, check__stack_overflow)
 
 TEST(simple_allocator, check__simple_list)
 {
-  simple_list<int, pr::allocator::simple_allocator<int, 11>> sl;
+  pr::list::simple_list<int, pr::allocator::simple_allocator<int, 11>> sl;
   sl.push_back(1);
   sl.push_back(2);
   sl.push_back(3);

@@ -8,14 +8,6 @@ RUN="./build/bin/base ${MODE1}"
 command meson compile -C build
 
 case "$MODE1" in
-  "hello" )
-    if [[ $MODE2 == "test" ]]; then
-      command $TEST 
-    else
-      command $RUN
-    fi
-  ;;
-
   "ip_filter" )
     if [[ $MODE2 == "test" ]]; then
       command cat homeworks/$MODE1/ip_filter_test.tsv | command $TEST 
@@ -27,28 +19,12 @@ case "$MODE1" in
     fi
   ;;
 
-  "simple_allocator" )
-    if [[ $MODE2 == "test" ]]; then
-      command $TEST 
-    else
-      command $RUN
-    fi
-  ;;
-
-  "matrix" )
-    if [[ $MODE2 == "test" ]]; then
-      command $TEST 
-    else
-      command $RUN
-    fi
-  ;;
-
-
-
-# default worker
   * )
-   echo
-   echo "ERROR: please set the project name (. run project_name)"
+    if [[ $MODE2 == "test" ]]; then
+      command $TEST 
+    else
+      command $RUN
+    fi
   ;;
 esac
 

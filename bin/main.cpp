@@ -2,8 +2,9 @@
 #include "ip_filter/ip_filter.hpp"
 #include "simple_allocator/simple_allocator.hpp"
 #include "matrix/matrix_old.hpp"
+#include "log/logger.hpp"
 
-#include "tools/src/logger/logger.hpp"
+//#include "tools/src/logger/logger.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -19,6 +20,8 @@ int main(int argc, char *argv[])
     pr::allocator::process();
   else if (name == "matrix")
     pr::matrix::process();
+  else if (name == "logger")
+    pr::logger::process();
   
   return 0;
 }

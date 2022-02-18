@@ -11,3 +11,4 @@
 1. hello
 2. ip_filter
 3. simple_allocator
+4. logger

@@ -18,10 +18,10 @@ int main(int argc, char *argv[])
     std::ignore = pr::ip_filter::process();
   else if (name == "simple_allocator")
     pr::allocator::process();
-  else if (name == "matrix")
-    pr::matrix::process();
   else if (name == "logger")
     pr::logger::process();
+  else if (name == "matrix")
+    pr::matrix::process();
   
   return 0;
 }

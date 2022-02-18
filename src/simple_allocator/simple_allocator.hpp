@@ -12,7 +12,7 @@ namespace pr
 {
   namespace allocator
   {
-    template <typename T, auto allocate_size = 128> // auto --> std::size_t
+    template <typename T, auto allocate_size> // auto --> std::size_t
     class simple_allocator 
     {
       public:
@@ -58,7 +58,7 @@ namespace pr
           }
           memory_map.flip(index);
           used_size += n;
-          ++count_allocate;
+          ++count_allocate; 
           return memory + index;
         }
         
